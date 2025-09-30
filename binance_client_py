@@ -1,0 +1,27 @@
+import os
+from binance.client import Client
+from config import API_KEY, API_SECRET
+
+# Initialize Binance Client for Testnet
+client = Client(API_KEY, API_SECRET, testnet=True)
+
+def get_account_info():
+    """
+    Fetch account balances from Binance Testnet
+    """
+    account = client.get_account()
+    balances = account['balances']
+    print("\nAccount Balances:")
+    for b in balances:
+        if float(b['free']) > 0:
+            print(f"{b['asset']}: {b['free']}")
+    return balances
+
+
+def get_symbol_price(symbol="BTCUSDT"):
+    """
+    Fetch latest price of given trading pair
+    """
+    ticker = client.get_symbol_ticker(symbol=symbol)
+    print(f"\nLatest Price of {symbol}: {ticker['price']}")
+    return ticker
